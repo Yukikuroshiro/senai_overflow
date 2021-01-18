@@ -6,16 +6,15 @@ class Question extends Model {
     static init(sequelize){
         super.init(
             {
-                titulo: DataTypes.STRING,
-                descricao: DataTypes.STRING,
-                imagem: DataTypes.STRING,
+                title: DataTypes.STRING,
+                description: DataTypes.STRING,
+                image: DataTypes.STRING,
                 gist: DataTypes.STRING,
                 
             },
             {
                 //tableName - serve para especificar o nome da tabela
                 sequelize,
-                tableName: "perguntas"
             }
         )
     }
@@ -23,7 +22,7 @@ class Question extends Model {
         Aqui configuramos os relacionamentos
     */
     static associate(models){
-        this.belongsTo(models.Student, {foreignKey:"aluno_id"});
+        this.belongsTo(models.Student);
         this.belongsToMany(models.Category, {through:"question_category"});
         this.hasMany(models.Answer);
     }

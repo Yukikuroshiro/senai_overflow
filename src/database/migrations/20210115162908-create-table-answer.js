@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      answer: {
+      description: {
         type: Sequelize.TEXT,
         allowNull: false
       },
@@ -16,17 +16,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model:"alunos",
+          model:"students",
           key:"id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete:"CASCADE"
       },
       question_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model:"perguntas",
+          model:"questions",
           key:"id"
-        }
+        },
+        onUpdate: "CASCADE",
+        onDelete:"CASCADE"
       },
       created_at: {
         type: Sequelize.DATE,

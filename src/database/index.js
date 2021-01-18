@@ -7,16 +7,16 @@ const Question = require("../models/Question");
 const Category = require("../models/Category");
 const Answer = require("../models/Answer");
 
-const conexao = new Sequelize(dbconfig);
+const connection = new Sequelize(dbconfig);
 
 //Inicializa os models
-Student.init(conexao);
-Question.init(conexao);
-Category.init(conexao);
-Answer.init(conexao);
+Student.init(connection);
+Question.init(connection);
+Category.init(connection);
+Answer.init(connection);
 
 //Inicializa os relacionamentos
-Student.associate(conexao.models);
-Question.associate(conexao.models);
-Category.associate(conexao.models);
-Answer.associate(conexao.models);
+Student.associate(connection.models);
+Question.associate(connection.models);
+Category.associate(connection.models);
+Answer.associate(connection.models);

@@ -6,27 +6,27 @@ module.exports = {
 
     },
     async store(req,res){//FAZER UM POST
-        const {titulo,descricao,imagem,gist, categorias} = req.body;
+        const {title,description,image ,gist, categories} = req.body;
 
-        const alunoId = req.headers.authorization;
+        const studentId = req.headers.authorization;
 
         try {
             //Buscar o aluno pelo ID
-            let aluno = await Student.findByPk(alunoId);
+            let student = await Student.findByPk(studentId);
 
             //Se aluno não existir, retorno erro
-            if(!aluno)
-                return res.status(404).send({erro:"Student não encontrado"});
+            if(!student)
+                return res.status(404).send({erro:"Aluno não encontrado"});
             //Crio a Question para este aluno
-            let question = await aluno.createQuestion({titulo,descricao,imagem,gist});
+            let question = await student.createQuestion({title,description,image,gist});
 
-            await question.addCategories(categorias);
+            await question.addCategories(categories);
 
             //Retorno sucesso
             res.status(201).send(question);
         } catch (error) {
             console.log(error);
-            res.status(500),send(error);
+            res.status(500).send(error);
         }
     },
     find(req,res){//ENCONTRAR PELO ID
@@ -35,7 +35,7 @@ module.exports = {
     async update(req,res){//ATUALIZAR
         const questionId = req.params.id;
 
-        const {titulo,descricao} = req.body
+        const {title,description} = req.body
 
         const studentId = req.headers.authorization;
 
@@ -43,15 +43,15 @@ module.exports = {
             const question = await Question.findByPk(questionId);
 
             if(!question)
-                return res.status(404).send({erro:"Questão não encontrada"});
+                return res.status(404).send({error:"Questão não encontrada"});
 
-            const student = await Student.findByPk(studentId)
+            // const student = await Student.findByPk(studentId)
 
-            if(question.aluno_id != studentId)
-                return res.status(401).send({erro:"Não autorizado"});
+            if(question.StudentId != studentId)
+                return res.status(401).send({error:"Não autorizado"});
 
-            question.titulo = titulo;
-            question.descricao = descricao;
+            question.title = title;
+            question.description = description;
 
             question.save()
 
@@ -108,12 +108,12 @@ module.exports = {
             const question = await Question.findOne({
                 where:{
                     id: questionId,
-                    aluno_id: studentId
+                    student_id: studentId
                 }
             });
 
             if(!question)
-                res.status(404).send({erro:"Questão não encontrada"});
+                res.status(404).send({error:"Pergunta não encontrada"});
 
             await question.destroy();
 

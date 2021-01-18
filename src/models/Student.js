@@ -7,14 +7,13 @@ class Student extends Model {
         super.init(
             {
                 ra: DataTypes.STRING,
-                nome: DataTypes.STRING,
+                name: DataTypes.STRING,
                 email: DataTypes.STRING,
-                senha: DataTypes.STRING
+                password: DataTypes.STRING
             },
             {
                 //tableName - serve para especificar o nome da tabela
                 sequelize,
-                tableName:"alunos"
             }
         )
     }
@@ -22,7 +21,7 @@ class Student extends Model {
         Aqui configuramos os relacionamentos
     */
     static associate(models){
-        this.hasMany(models.Question, {foreignKey: "aluno_id" });
+        this.hasMany(models.Question);
         this.hasMany(models.Answer);
     }
 }

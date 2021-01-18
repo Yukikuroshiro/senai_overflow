@@ -10,7 +10,7 @@ module.exports = {
      */
 
      //aqui dizemos o que deve ser feito
-    queryInterface.createTable('alunos', {
+    queryInterface.createTable('students', {
       id:{
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      nome:{
+      name:{
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -29,7 +29,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      senha:{
+      password:{
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -53,6 +53,6 @@ module.exports = {
      */
 
      //aqui dizemos o que deve ser desfeito
-    queryInterface.dropTable("alunos");
+    queryInterface.dropTable("students");
   }
 };

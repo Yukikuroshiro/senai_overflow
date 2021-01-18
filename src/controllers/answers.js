@@ -24,26 +24,26 @@ module.exports = {
     async store(req, res){
         const questionId = req.params.id;
         const studentId = req.headers.authorization;
-        const answer = req.body.answer;
+        const {description} = req.body;
 
         try {
             //Buscar o aluno pelo ID
             let student = await Student.findByPk(studentId);
             if(!student)
-                return res.status(404).send({erro:"Aluno não encontrado"});
+                return res.status(404).send({error:"Aluno não encontrado"});
 
             //Verifica se a pergunta existe
             let question = await Question.findByPk(questionId);
 
             //Se pergunta não existir, retorna erro 404
             if(!question)
-                return res.status(404).send({erro:"Pergunta não encontrada"});
+                return res.status(404).send({error:"Pergunta não encontrada"});
 
             //Cria a resposta para a pergunta com o aluno do token
-            const result = await question.createAnswer({answer,student_id:studentId});
+            const answer = await question.createAnswer({description,student_id:studentId});
 
             //Responde com status de sucesso
-            res.status(201).send(result);
+            res.status(201).send(answer);
         } catch (error) {
             console.log(error);
             res.status(500).send(error);

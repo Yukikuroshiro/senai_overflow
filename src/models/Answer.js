@@ -4,7 +4,7 @@ class Answer extends Model{
     static init(sequelize){
         super.init(
             {
-                answer: DataTypes.TEXT,
+                description: DataTypes.TEXT,
                 student_id: DataTypes.INTEGER
             },
             {
