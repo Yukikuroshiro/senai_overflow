@@ -1,4 +1,7 @@
 const Student = require("../models/Student");
+const bcrypt = require("bcryptjs");
+const auth = require("../config/auth.json");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
     //Cria a função que vai ser executa pela rota
@@ -26,13 +29,31 @@ module.exports = {
 
             if(student)
                 return res.status(400).send({error:"Aluno já cadastrado"});
+            //Métodos de criptografar
+            //hash(variavelQueSeráCriptografa) -> retorna uma promesa
+            //hashSync(variavelQueSeráCriptografa) -> retorna a criptografia
 
-            student = await Student.create({ra, name, email, password});
+            const passwordCript = bcrypt.hashSync(password);
 
-            res.status(201).send(student);
+            student = await Student.create({ra, name, email, password:passwordCript});
+
+            const token = jwt.sign({
+                studentId: student.id,
+                studentName: student.name
+            }, auth.secret);
+
+            res.status(201).send({
+                student: {
+                    studentId: student.id,
+                    Name: student.name,
+                    ra: student.ra,
+                    email: student.email
+                },
+                token
+            });
         } catch (error) {
             console.log(error);
-            res.status(500).send(error);
+            return res.status(500).send(error);
         }
         
         
