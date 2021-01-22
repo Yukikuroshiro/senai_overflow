@@ -1,7 +1,8 @@
 const express = require("express");
 
 const authMiddleware = require("./middleware/authorization");
-const uploadQuestions = require("./middleware/uploadQuestions");
+const uploadQuestionsMiddleware = require("./middleware/uploadQuestions");
+const uploadQuestions = require("./services/firebase");
 
 const studentValidators = require("./validators/students");
 const questionValidators = require("./validators/questions");
@@ -51,6 +52,7 @@ routes.put("/students/:id", studentController.update);
 //|-----------------| Rotas de perguntas |-----------------|
 routes.post(
   "/questions",
+  uploadQuestionsMiddleware,
   uploadQuestions,
   questionValidators.create,
   questionsController.store

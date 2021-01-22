@@ -12,6 +12,7 @@ module.exports = {
     const categoriesArr = categories.split(",");
 
     const { studentId } = req;
+    const { firebaseUrl } = req.file ? req.file : "";
 
     try {
       //Buscar o aluno pelo ID
@@ -24,21 +25,14 @@ module.exports = {
       let question = await student.createQuestion({
         title,
         description,
-        image: req.file.filename,
+        image: firebaseUrl,
         gist,
       });
 
       await question.addCategories(categoriesArr);
 
       //Retorno sucesso
-      res.status(201).send({
-        id: question.id,
-        title: question.title,
-        description: question.description,
-        created_at: question.created_at,
-        gist: question.gist,
-        image: `http://localhost:3333/${req.file.path}`,
-      });
+      res.status(201).send(question);
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
