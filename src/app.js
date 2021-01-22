@@ -12,6 +12,9 @@ const app = express();
 
 app.use(express.json());
 
+//Definimos a pasta uploads como pública, servindo arquivos estáticos
+app.use("/uploads", express.static("uploads"));
+
 app.use(routes);
 app.use(errors());
 
