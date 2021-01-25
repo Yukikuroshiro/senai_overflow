@@ -1,5 +1,6 @@
 const Question = require("../models/Question");
 const Student = require("../models/Student");
+const questions = require("../validators/questions");
 
 module.exports = {
   index(req, res) {
@@ -25,14 +26,21 @@ module.exports = {
       let question = await student.createQuestion({
         title,
         description,
-        image: firebaseUrl,
+        image: req.file.firebaseUrl,
         gist,
       });
 
       await question.addCategories(categoriesArr);
 
       //Retorno sucesso
-      res.status(201).send(question);
+      res.status(201).send({
+        id: question.id,
+        title: question.title,
+        description: question.description,
+        created_at: question.created_at,
+        gist: question.gist,
+        image: req.file.firebaseUrl,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send(error);
