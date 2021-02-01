@@ -2,6 +2,8 @@
 const { errors } = require("celebrate");
 const express = require("express");
 
+const cors = require("cors");
+
 //Importar as rotas
 const routes = require("./routes");
 
@@ -11,6 +13,8 @@ require("./database");
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 //Definimos a pasta uploads como pública, servindo arquivos estáticos
 app.use("/uploads", express.static("uploads"));
