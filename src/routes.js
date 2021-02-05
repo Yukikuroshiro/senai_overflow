@@ -13,7 +13,7 @@ const questionsController = require("./controllers/questions");
 const answerController = require("./controllers/answers");
 const feedController = require("./controllers/feed");
 const sessionController = require("./controllers/sessions");
-const { errors } = require("celebrate");
+const categoriesController = require("./controllers/categories");
 
 const routes = express.Router();
 
@@ -59,6 +59,9 @@ routes.post(
 );
 
 //Desafio, fazer o delete da imagem utilizando fs
+
+//|-----------------| Rotas de categorias |-----------------|
+routes.get("/categories", categoriesController.index);
 
 routes.delete("/questions/:id", questionsController.delete);
 routes.put("/questions/:id", questionsController.update);
