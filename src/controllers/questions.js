@@ -8,11 +8,12 @@ module.exports = {
   },
   async store(req, res) {
     //FAZER UM POST
-    const { title, description, image, gist, categories } = req.body;
+    const { title, description, gist, categories } = req.body;
 
-    const categoriesArr = categories.split(",");
+    const categoriesArray = categories.split(",");
 
     const { studentId } = req;
+
     const { firebaseUrl } = req.file ? req.file : "";
 
     try {
@@ -26,11 +27,11 @@ module.exports = {
       let question = await student.createQuestion({
         title,
         description,
-        image: firebaseUrl,
+        image: req.file ? req.file.firebaseUrl : null,
         gist,
       });
 
-      await question.addCategories(categoriesArr);
+      await question.addCategories(categoriesArray);
 
       //Retorno sucesso
       res.status(201).send({
@@ -39,7 +40,7 @@ module.exports = {
         description: question.description,
         created_at: question.created_at,
         gist: question.gist,
-        image: req.file.firebaseUrl,
+        image: req.file ? req.file.firebaseUrl : null,
       });
     } catch (error) {
       console.log(error);
