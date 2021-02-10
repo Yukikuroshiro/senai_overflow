@@ -1,37 +1,43 @@
-
 const Question = require("../models/Question");
 
 module.exports = {
-    async index(req, res){
-        try {
-            const feed = await Question.findAll({
-                attributes: ["id", "title", "description", "image", "gist", "created_at"],
-                include:[
-                    {
-                        association: "Student", 
-                        attributes:["id", "name"]
-                    },
-                    {
-                        association:"Answers",
-                        attributes:["id","description","created_at"],
-                        include:{
-                            association:"Student",
-                            attributes:["id","name"]
-                        }
-                    },
-                    {
-                        association:"Categories",
-                        attributes:["id","description"],
-                        through: {attributes:[]}
-                    }
-                ],
-                order:[["created_at", "DESC"]]
-            });
+  async index(req, res) {
+    try {
+      const feed = await Question.findAll({
+        attributes: [
+          "id",
+          "title",
+          "description",
+          "image",
+          "gist",
+          "created_at",
+        ],
+        include: [
+          {
+            association: "Student",
+            attributes: ["id", "name", "image"],
+          },
+          {
+            association: "Answers",
+            attributes: ["id", "description", "created_at"],
+            include: {
+              association: "Student",
+              attributes: ["id", "name", "image"],
+            },
+          },
+          {
+            association: "Categories",
+            attributes: ["id", "description"],
+            through: { attributes: [] },
+          },
+        ],
+        order: [["created_at", "DESC"]],
+      });
 
-            res.status(200).send(feed);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send(error);
-        }
+      res.status(200).send(feed);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
     }
-}
+  },
+};

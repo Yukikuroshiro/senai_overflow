@@ -1,10 +1,11 @@
 const express = require("express");
 
 const authMiddleware = require("./middleware/authorization");
-const uploadQuestions = require("./middleware/uploadQuestions");
+const uploadSingleImage = require("./middleware/uploadSingleImage");
 const uploadFirebase = require("./services/uploadFirebase");
 
 const studentValidators = require("./validators/students");
+const studentImages = require("./controllers/studentsImages");
 const questionValidators = require("./validators/questions");
 const answerValidators = require("./validators/answers");
 
@@ -48,11 +49,17 @@ routes.get("/students", studentController.index);
 routes.get("/students/:id", studentController.find);
 routes.delete("/students/:id", studentController.delete);
 routes.put("/students/:id", studentController.update);
+routes.post(
+  "/students/:id/images",
+  uploadSingleImage,
+  uploadFirebase,
+  studentImages.store
+);
 
 //|-----------------| Rotas de perguntas |-----------------|
 routes.post(
   "/questions",
-  uploadQuestions,
+  uploadSingleImage,
   uploadFirebase,
   questionValidators.create,
   questionsController.store
