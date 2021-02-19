@@ -50,19 +50,20 @@ routes.get("/students/:id", studentController.find);
 routes.delete("/students/:id", studentController.delete);
 routes.put("/students/:id", studentController.update);
 routes.post(
-    "/students/:id/images",
-    uploadSingleImage,
-    uploadFirebase,
-    studentImages.store
+  "/students/:id/images",
+  uploadSingleImage,
+  uploadFirebase,
+  studentImages.store
 );
 
 //|-----------------| Rotas de perguntas |-----------------|
+routes.get("/questions", questionValidators.index, questionsController.index);
 routes.post(
-    "/questions",
-    uploadSingleImage,
-    uploadFirebase,
-    questionValidators.create,
-    questionsController.store
+  "/questions",
+  uploadSingleImage,
+  uploadFirebase,
+  questionValidators.create,
+  questionsController.store
 );
 
 //Desafio, fazer o delete da imagem utilizando fs
@@ -75,14 +76,14 @@ routes.put("/questions/:id", questionsController.update);
 
 //|-----------------| Rotas de Respostas |-----------------|
 routes.post(
-    "/questions/:id/answers",
-    answerValidators.create,
-    answerController.store
+  "/questions/:id/answers",
+  answerValidators.create,
+  answerController.store
 );
 
 //|-----------------| Rotas do Feed |-----------------|
-routes.post("/questions/feed", feedController.index);
+routes.get("/feed", feedController.index);
 
-routes.post("/questions/feed/search", feedController.find)
+routes.post("/questions/feed/search", feedController.find);
 
 module.exports = routes;

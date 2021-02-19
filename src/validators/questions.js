@@ -1,6 +1,12 @@
 const { celebrate, Joi, Segments } = require("celebrate");
 
 module.exports = {
+  index: celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      search: Joi.string().min(3).required(),
+    }),
+  }),
+
   create: celebrate({
     // [Segments.HEADERS]: Joi.object({
     //     authorization: Joi.string().required()

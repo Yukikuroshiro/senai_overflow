@@ -3,9 +3,11 @@ const { Op } = require("sequelize");
 
 module.exports = {
   async index(req, res) {
-    const { limit, offset } = req.body;
+    // const { page } = req.query;
+    const { page } = req.query;
 
     try {
+      const totalQuestion = await Question.count();
       const feed = await Question.findAll({
         attributes: [
           "id",
@@ -36,22 +38,15 @@ module.exports = {
           },
         ],
         order: [["created_at", "DESC"]],
-        limit: [offset, limit],
+        limit: page ? [(page - 1) * 5, 5] : undefined,
       });
 
-      // const { feedOffset, feedLimit } = req.body;
+      res.header("X-Total-Count", totalQuestion);
+      res.header("Acess-Control-Expose-Headers", "X-Total-Count");
 
-      // const feed = await Question.findAll({ offset: feedOffset, limit: feedLimit })
-      // // const completeFeed = await Question.findByPk(
-      // //     feed[0].id,
-      // // )
-      // const completeFeed = feed.map((e) => {
-      //     {
-      //         id: e.id
-      //     }
-      // })
-
-      res.send(feed);
+      setTimeout(() => {
+        res.send(feed);
+      }, 1000);
     } catch (error) {
       console.log(error);
       res.status(500).send({ error });

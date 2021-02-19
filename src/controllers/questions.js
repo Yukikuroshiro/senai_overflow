@@ -1,10 +1,66 @@
+const { Op } = require("sequelize");
 const Question = require("../models/Question");
 const Student = require("../models/Student");
 const questions = require("../validators/questions");
 
 module.exports = {
-  index(req, res) {
+  async index(req, res) {
     //LISTAR TODOS
+    const { search } = req.query;
+
+    try {
+      const questions = await Question.findAll({
+        attributes: [
+          "id",
+          "title",
+          "description",
+          "image",
+          "gist",
+          "created_at",
+          "StudentId",
+        ],
+        include: [
+          {
+            association: "Student",
+            attributes: ["id", "name", "image"],
+          },
+          {
+            association: "Answers",
+            attributes: ["id", "description", "created_at"],
+            include: {
+              association: "Student",
+              attributes: ["id", "name", "image"],
+            },
+          },
+          {
+            association: "Categories",
+            attributes: ["id", "description"],
+            through: { attributes: [] },
+          },
+        ],
+        order: [["created_at", "DESC"]],
+        where: {
+          [Op.or]: [
+            {
+              title: {
+                [Op.substring]: search,
+              },
+            },
+            {
+              description: {
+                [Op.substring]: search,
+              },
+            },
+          ],
+        },
+      });
+
+      res.send(questions);
+    } catch (error) {
+      console.log(error);
+
+      res.status(500).send({ error: error });
+    }
   },
   async store(req, res) {
     //FAZER UM POST
