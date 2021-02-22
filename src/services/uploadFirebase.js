@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-const serviceAccount = require("../config/firebase-key.json");
+const serviceAccount = require("../config/firebase-key.js");
 
 const BUCKET = "senai-overflow-2021-98b06.appspot.com"; //Constante do endereço do BUCKET
 

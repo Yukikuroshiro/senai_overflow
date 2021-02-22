@@ -2,8 +2,6 @@
 
 anotacoes
 
-/src/config/auth.json
-
-/src/config/firebase-key.json
-
 /uploads/*
+
+.env
